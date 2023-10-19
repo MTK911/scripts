@@ -1,0 +1,18 @@
+ulimit -c
+
+If output is zero means that core file is not created.
+
+Now we set core file size limit to 70000 byte
+
+ulimit -c 70000
+
+Now we start binary & segfault it right away.
+
+./binaryscript.sh.x&  ( sleep 0.02 && kill -SIGSEGV $! )
+
+sleep 0.02 will give the binary enough time to start up and decrypt the original script. The variable $! contains the pid of the last background process started, 
+so we can easily kill it with the segmentation fault signal SIGSEGV (same as kill -11 $!). 
++ segmentation fault (core dumped)  ./binaryscript.sh.x
+cat core | strings >plain_text
+
+Ref: https://tipstrickshack.blogspot.com/2013/08/how-to-get-plain-text-source-from-shc.html 
