@@ -1,0 +1,26 @@
+$inputFilePath = "LIST.txt"
+$outputFilePath = "OUT.txt"
+
+if (Test-Path $inputFilePath) {
+    $fileContent = Get-Content $inputFilePath
+
+    $base64Content = @()
+
+    Write-Output "Modified and Base64 Encoded File Content:"
+    foreach ($line in $fileContent) {
+        $modifiedLine = "{""userEmail"":""$line"",""password"":""1234""}"
+        
+        $base64Line = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($modifiedLine))
+        $base64Content += $base64Line
+
+        Write-Output "Original Line: $line"
+        Write-Output "Modified Line: $modifiedLine"
+        Write-Output "Base64 Encoded Line: $base64Line"
+        Write-Output ""
+    }
+    $base64Content | Out-File -FilePath $outputFilePath -Encoding UTF8
+
+    Write-Host "Output written to $outputFilePath"
+} else {
+    Write-Host "The specified input file does not exist."
+}
